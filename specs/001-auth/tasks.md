@@ -6,7 +6,7 @@
 - [x] T1. 확인: 설치된 TypeORM(^1.1.2)에서 마이그레이션을 만들고 실행하는 방법을 공식 문서로 확인한다. 확인한 방법을 `plan.md` 맨 아래에 적는다.
   - 완료: 이 프로젝트(ESM)에서 쓸 마이그레이션 명령이 정리됨
 
-- [ ] T2. 입력 검증과 공통 에러 형식
+- [x] T2. 입력 검증과 공통 에러 형식
   - 설치: `class-validator`, `class-transformer`
   - 전역 ValidationPipe(whitelist), 모든 에러를 `{ code, message, details }`로 바꾸는 필터(`src/common/filters/`)
   - 완료: 일부러 잘못된 요청을 보내면 `VALIDATION_FAILED`가 정해진 모양으로 나옴
