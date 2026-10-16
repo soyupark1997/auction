@@ -63,3 +63,17 @@
 3. `@nestjs/jwt` 12.x의 설정과 서명·검증 방법
 4. Vitest에서 NestJS e2e 테스트를 돌리는 방법과 `supertest` 타입 설치
 5. 전역 가드와 `@Public()` 데코레이터 구현 방식이 현재 NestJS 문서와 맞는지
+
+## T1 결과: 마이그레이션 방법 (2026-10-16, 공식 문서와 npm으로 확인)
+
+- TypeORM 1.1.2는 Node `^20.19.0 || ^22.13.0 || >=24.11.0`을 요구한다. 현재 Node v24.12.0이라 통과한다.
+- CLI가 읽을 **DataSource 파일을 따로** 만든다 (예: `src/database/data-source.ts`). 앱 안의 연결 설정과는 별도이고, 같은 DB 접속 정보를 쓴다.
+- DataSource에서 꼭 필요한 옵션: `synchronize: false`, `migrations: [...]`. 문서는 `.js`와 `.ts`를 모두 포함하는 경로 패턴을 권장한다 (개발은 TypeScript, 배포는 컴파일된 JavaScript).
+- 마이그레이션 만들기: `typeorm migration:generate -d <DataSource 파일 경로> <이름>` (변경이 없으면 종료 코드 1).
+- 마이그레이션 실행: `typeorm migration:run -- -d <DataSource 파일 경로>`. 기본 `typeorm` 명령은 컴파일된 `.js`만 실행한다.
+- TypeScript 파일을 바로 실행하려면 이 프로젝트가 ESM이므로 `typeorm-ts-node-esm`을 쓴다. 문서의 안내: `ts-node`를 개발 의존성으로 설치하고, `package.json`에 `"typeorm": "typeorm-ts-node-esm"` 스크립트를 둔 뒤 `npm run typeorm migration:run -- -d <경로>`로 실행한다.
+- 문서에 되돌리기(revert)와 상태 확인(show) 명령은 이번에 읽은 페이지에 없었다. 필요할 때 해당 페이지를 읽는다.
+- 문서에 ESM용 마이그레이션 파일 출력 옵션(`esm` 플래그)이 있다는 언급이 있으나 예시 명령은 없다. 확인 필요.
+- 주의 (일반 지식, 확인 필요): 문서 예시의 `__dirname`은 ESM에서 쓸 수 없다. 대체 방법이 필요하다.
+- 아직 해보지 않은 것: `ts-node`가 이 프로젝트(`module: nodenext`)에서 실제로 동작하는지, `.env`를 CLI에서 읽는 방법(`dotenv` 패키지 또는 Node의 `--env-file` 옵션, 일반 지식). 안 되면 먼저 빌드(`npm run build`)하고 `dist` 안의 `.js`를 실행하는 방법으로 대체한다.
+- **T3에서 실제로 해보고 확정한다.**
