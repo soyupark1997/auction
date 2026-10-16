@@ -12,7 +12,7 @@
   - 완료: 일부러 잘못된 요청을 보내면 `VALIDATION_FAILED`가 정해진 모양으로 나옴
 
 - [x] T3. users 테이블
-  - `src/members/user.entity.ts`와 마이그레이션 (id, email, password_hash, nickname, role, created_at, 이메일·닉네임 유니크)
+  - `src/users/user.entity.ts`와 마이그레이션 (id, email, password_hash, nickname, role, created_at, 이메일·닉네임 유니크)
   - 완료: 마이그레이션 실행 후 DB에서 `users` 테이블과 제약이 보임
 
 - [ ] T4. 가입 API (인수 조건 1, 4, 10)

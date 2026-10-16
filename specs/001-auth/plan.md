@@ -25,7 +25,7 @@
 
 ## 코드 구조
 
-- `src/members/`: `user.entity.ts`, `members.service.ts`(회원 찾기, 만들기), `members.controller.ts`(GET /me)
+- `src/users/`: `user.entity.ts`, `users.service.ts`(회원 찾기, 만들기), `users.controller.ts`(GET /me)
 - `src/auth/`: `auth.controller.ts`(POST /auth/signup, POST /auth/login), `auth.service.ts`, `jwt-auth.guard.ts`, `roles.guard.ts`, `decorators/`(`public`, `roles`, `current-user`), `dto/`(`signup.dto.ts`, `login.dto.ts`)
 - `src/common/filters/`: 모든 에러를 `{ code, message, details }` 모양으로 바꾸는 필터
 - `src/database/migrations/`: users 테이블 생성
