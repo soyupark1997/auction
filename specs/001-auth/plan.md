@@ -77,3 +77,12 @@
 - 주의 (일반 지식, 확인 필요): 문서 예시의 `__dirname`은 ESM에서 쓸 수 없다. 대체 방법이 필요하다.
 - 아직 해보지 않은 것: `ts-node`가 이 프로젝트(`module: nodenext`)에서 실제로 동작하는지, `.env`를 CLI에서 읽는 방법(`dotenv` 패키지 또는 Node의 `--env-file` 옵션, 일반 지식). 안 되면 먼저 빌드(`npm run build`)하고 `dist` 안의 `.js`를 실행하는 방법으로 대체한다.
 - **T3에서 실제로 해보고 확정한다.**
+
+## T3 결과 (2026-10-16)
+- entity: `src/users/user.entity.ts` (users: id BIGSERIAL, email/nickname UNIQUE, password_hash, role 기본 'USER', created_at timestamptz)
+- DataSource: `src/database/data-source.ts` — `.env`는 Node 내장 `process.loadEnvFile()`로 읽고, entity는 직접 import(`.js` 확장자), migrations는 `src/database/migrations/*.ts`
+- 스크립트: `"typeorm": "typeorm-ts-node-esm"` + devDependency `ts-node`. ESM + Node 24 + ts-node 조합이 정상 동작함 (실제 실행으로 확인)
+- 생성: `npm run typeorm -- migration:generate src/database/migrations/<이름> -d src/database/data-source.ts`
+- 적용: `npm run typeorm -- migration:run -d src/database/data-source.ts`
+- 확인: `docker compose exec postgres psql -U auction -d auction -c "\d users"`
+- 이메일 대소문자는 DB가 아니라 앱에서 소문자로 바꿔 저장(T4)
